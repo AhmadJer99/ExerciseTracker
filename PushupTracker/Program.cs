@@ -2,6 +2,8 @@
 using ExerciseTracker.Interfaces;
 using ExerciseTracker.Models;
 using ExerciseTracker.Repository;
+using ExerciseTracker.Services;
+using ExerciseTracker.UserInterface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,12 +26,16 @@ var host = Host.CreateDefaultBuilder()
     {
         services.AddDbContext<ExerciseTrackerDbContext<Pushup>>(options =>
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
+
         services.AddScoped(typeof(IRepository<>), typeof(ExerciseRepository<>));
-        //services.AddScoped<IExerciseService, ExerciseService>();
+        services.AddScoped<IExerciseService, ExerciseService>();
+        services.AddScoped<MainMenu>();
     })
     .UseSerilog()
     .Build();
 
+var svc = ActivatorUtilities.CreateInstance<MainMenu>(host.Services);
+await svc.ShowMenuAsync();
 
 static void BuildConfig(IConfigurationBuilder builder)
 {
