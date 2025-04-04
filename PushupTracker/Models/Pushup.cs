@@ -1,5 +1,5 @@
 ﻿namespace ExerciseTracker.Models;
-public class Exercise
+public class Pushup
 {
     public int Id { get; set; }
     public DateTime Date { get; set; }  // Just one date, no start/end

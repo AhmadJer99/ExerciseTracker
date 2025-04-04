@@ -3,15 +3,15 @@ using ExerciseTracker.Models;
 
 namespace ExerciseTracker.Data;
 
-public class ExerciseTrackerDbContext : DbContext
+public class ExerciseTrackerDbContext<TEntity> : DbContext where TEntity : class
 {
     public ExerciseTrackerDbContext(DbContextOptions options) : base(options)
     {
     }
-    public DbSet<Exercise> Exercises { get; set; }
+    public DbSet<TEntity> Exercises { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Exercise>()
+        modelBuilder.Entity<Pushup>()
             .HasKey(e => e.Id);
     }
 }

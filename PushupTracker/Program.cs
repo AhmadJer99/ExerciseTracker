@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ExerciseTracker.Data;
+using ExerciseTracker.Interfaces;
+using ExerciseTracker.Models;
+using ExerciseTracker.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -17,7 +22,10 @@ Log.Logger.Information("Application Starting");
 var host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
-
+        services.AddDbContext<ExerciseTrackerDbContext<Pushup>>(options =>
+            options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped(typeof(IRepository<>), typeof(ExerciseRepository<>));
+        //services.AddScoped<IExerciseService, ExerciseService>();
     })
     .UseSerilog()
     .Build();
@@ -27,6 +35,6 @@ static void BuildConfig(IConfigurationBuilder builder)
 {
     builder.SetBasePath(Directory.GetCurrentDirectory())
            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-           .AddJsonFile($"appsetings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",optional: true)
+           .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",optional: true)
            .AddEnvironmentVariables();
 }
