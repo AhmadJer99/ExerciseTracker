@@ -1,9 +1,12 @@
-﻿using Spectre.Console;
+﻿using ExerciseTracker.Controllers;
+using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 
 public class MainMenu : BaseMenu
 {
+    private readonly ExerciseController _exerciseController;
+
     private enum MenuOptions
     {
         AddExercise = 1,
@@ -13,9 +16,9 @@ public class MainMenu : BaseMenu
         Exit
     }
 
-    public MainMenu()
+    public MainMenu(ExerciseController exerciseController)
     {
-        
+        _exerciseController = exerciseController;
     }
 
     public override async Task ShowMenuAsync()

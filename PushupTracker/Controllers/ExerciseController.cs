@@ -17,7 +17,8 @@ public class ExerciseController : BaseController
     public async Task<Result<List<Pushup>>> GetAllExercises()
     {
         var exercises = await _exerciseService.GetAll();
-        if (exercises == null || !exercises.Any())
+
+        if (exercises == null || exercises.Count == 0)
             return Result<List<Pushup>>.FailResult("No exercises found.");
 
         return Result<List<Pushup>>.SuccessResult(exercises, "Exercises retrieved successfully.");

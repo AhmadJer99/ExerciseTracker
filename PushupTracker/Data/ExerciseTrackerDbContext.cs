@@ -9,9 +9,4 @@ public class ExerciseTrackerDbContext<TEntity> : DbContext where TEntity : class
     {
     }
     public DbSet<TEntity> Exercises { get; set; }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Pushup>()
-            .HasKey(e => e.Id);
-    }
 }

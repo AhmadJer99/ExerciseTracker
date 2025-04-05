@@ -1,4 +1,5 @@
-﻿using ExerciseTracker.Data;
+﻿using ExerciseTracker.Controllers;
+using ExerciseTracker.Data;
 using ExerciseTracker.Interfaces;
 using ExerciseTracker.Models;
 using ExerciseTracker.Repository;
@@ -29,6 +30,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddTransient(typeof(IRepository<>), typeof(ExerciseRepository<>));
         services.AddTransient<IExerciseService, ExerciseService>();
+        services.AddTransient<ExerciseController>();
         services.AddTransient<MainMenu>();
     })
     .UseSerilog()
