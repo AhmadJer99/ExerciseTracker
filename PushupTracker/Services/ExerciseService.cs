@@ -5,28 +5,34 @@ namespace ExerciseTracker.Services;
 
 public class ExerciseService : IExerciseService
 {
-    public Task<Pushup> Create(Pushup newEntity)
+    private readonly IRepository<Pushup> _repository;
+
+    public ExerciseService(IRepository<Pushup> repository)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+    }
+    public async Task Create(Pushup newEntity)
+    {
+        await _repository.AddAsync(newEntity);
     }
 
-    public Task<string> Delete(int id)
+    public async Task Delete(Pushup pushup)
     {
-        throw new NotImplementedException();
+        await _repository.DeleteAsync(pushup);
     }
 
-    public Task<List<Pushup>> GetAll()
+    public async Task<List<Pushup>> GetAll()
     {
-        throw new NotImplementedException();
+        return (await _repository.GetAllAsync()).ToList();
     }
 
-    public Task<Pushup> GetById(int id)
+    public async Task<Pushup> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _repository.GetByIdAsync(id);
     }
 
-    public Task<Pushup> Update(int id, Pushup updatedEntity)
+    public Task Update(Pushup updatedPushup)
     {
-        throw new NotImplementedException();
+        return _repository.UpdateAsync(updatedPushup);
     }
 }
