@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExerciseTracker.Helper;
 using ExerciseTracker.Interfaces;
 using ExerciseTracker.Models;
 
@@ -13,52 +14,55 @@ public class ExerciseController : BaseController
         _exerciseService = exerciseService;
     }
 
-    public async Task<List<Pushup>> GetAllExercises()
+    public async Task<Result<List<Pushup>>> GetAllExercises()
     {
         var exercises = await _exerciseService.GetAll();
-        return exercises;
+        if (exercises == null || !exercises.Any())
+            return Result<List<Pushup>>.FailResult("No exercises found.");
+
+        return Result<List<Pushup>>.SuccessResult(exercises, "Exercises retrieved successfully.");
     }
 
-    public async Task<Pushup> GetExerciseById(int id)
+    public async Task<Result<Pushup>> GetExerciseById(int id)
     {
         var exercise = await _exerciseService.GetById(id);
-
-        return exercise;
+        if (exercise == null)
+            return Result<Pushup>.FailResult("Exercise not found.");
+        return Result<Pushup>.SuccessResult(exercise);
     }
 
-    public async Task<bool> CreateExercise(Pushup newExercise)
+    public async Task<Result<Pushup>> CreateExercise(Pushup newPushup)
     {
-        if (newExercise == null)
+        if (newPushup == null)
         {
-            return false;
+            return Result<Pushup>.FailResult("Invalid exercise data.");
         }
-        await _exerciseService.Create(newExercise);
-        return true;
+        await _exerciseService.Create(newPushup);
+        return Result<Pushup>.SuccessResult(newPushup, "Exercise created successfully.");
     }
 
-    public async Task<bool> UpdateExercise(int id, Pushup updatedExercise)
+    public async Task<Result<Pushup>> UpdateExercise(int id, Pushup updatedExercise)
     {
         if (id != updatedExercise.Id)
         {
-            return false;
+            return Result<Pushup>.FailResult("Mismatched exercise ID.");
         }
         var existingExercise = await _exerciseService.GetById(id);
         if (existingExercise == null)
-        {
-            return false;
-        }
+            return Result<Pushup>.FailResult("Exercise not found.");
+
         await _exerciseService.Update(updatedExercise);
-        return true;
+        return Result<Pushup>.SuccessResult(updatedExercise, "Exercise updated successfully.");
     }
 
-    public async Task<bool> DeleteExercise(int id)
+    public async Task<Result<Pushup>> DeleteExercise(int id)
     {
         var exercise = await _exerciseService.GetById(id);
         if (exercise == null)
         {
-            return false;
+            return Result<Pushup>.FailResult("Exercise not found.");
         }
         await _exerciseService.Delete(exercise);
-        return true;
+        return Result<Pushup>.SuccessResult(exercise, "Exercise deleted successfully.");
     }
 }

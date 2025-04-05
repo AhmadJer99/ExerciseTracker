@@ -26,7 +26,7 @@ var host = Host.CreateDefaultBuilder()
     {
         services.AddDbContext<ExerciseTrackerDbContext<Pushup>>(options =>
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
-
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddTransient(typeof(IRepository<>), typeof(ExerciseRepository<>));
         services.AddTransient<IExerciseService, ExerciseService>();
         services.AddTransient<MainMenu>();
