@@ -14,7 +14,7 @@ public class ExerciseController : BaseController
         _exerciseService = exerciseService;
     }
 
-    public async Task<Result<List<Pushup>>> GetAllExercises()
+    public async Task<Result<List<Pushup>>> GetAllExercisesAsync()
     {
         var exercises = await _exerciseService.GetAll();
 
@@ -24,7 +24,7 @@ public class ExerciseController : BaseController
         return Result<List<Pushup>>.SuccessResult(exercises, "Exercises retrieved successfully.");
     }
 
-    public async Task<Result<Pushup>> GetExerciseById(int id)
+    public async Task<Result<Pushup>> GetExerciseByIdAsync(int id)
     {
         var exercise = await _exerciseService.GetById(id);
         if (exercise == null)
@@ -32,7 +32,7 @@ public class ExerciseController : BaseController
         return Result<Pushup>.SuccessResult(exercise);
     }
 
-    public async Task<Result<Pushup>> CreateExercise(Pushup newPushup)
+    public async Task<Result<Pushup>> CreateExerciseAsync(Pushup newPushup)
     {
         if (newPushup == null)
         {
@@ -42,7 +42,7 @@ public class ExerciseController : BaseController
         return Result<Pushup>.SuccessResult(newPushup, "Exercise created successfully.");
     }
 
-    public async Task<Result<Pushup>> UpdateExercise(int id, Pushup updatedExercise)
+    public async Task<Result<Pushup>> UpdateExerciseAsync(int id, Pushup updatedExercise)
     {
         if (id != updatedExercise.Id)
         {
@@ -56,7 +56,7 @@ public class ExerciseController : BaseController
         return Result<Pushup>.SuccessResult(updatedExercise, "Exercise updated successfully.");
     }
 
-    public async Task<Result<Pushup>> DeleteExercise(int id)
+    public async Task<Result<Pushup>> DeleteExerciseAsync(int id)
     {
         var exercise = await _exerciseService.GetById(id);
         if (exercise == null)

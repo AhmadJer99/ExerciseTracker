@@ -1,6 +1,8 @@
-﻿using ExerciseTracker.Helper;
+﻿using ExerciseTracker.Services;
 using ExerciseTracker.Controllers;
 using ExerciseTracker.Models;
+using ConsoleTableExt;
+using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 
@@ -12,14 +14,17 @@ public class ExerciseHistoryMenu : BaseMenu
     public ExerciseHistoryMenu(ExerciseController exerciseController)
     {
         _exerciseController = exerciseController;
-        var result = _exerciseController.GetAllExercises().Result;
+        var result = _exerciseController.GetAllExercisesAsync().Result;
         _pushups = result.Data ?? [];
     }
     public override async Task ShowMenuAsync()
     {
-        foreach (var pushup in _pushups)
+        Console.Clear();
+        if (_pushups == null || _pushups.Count == 0)
         {
-            Console.WriteLine($"ID: {pushup.Id}, Date: {pushup.Date}, Reps: {pushup.Reps}, Comments: {pushup.Comments}");
+            Console.WriteLine("No exercise history found.");
+            return;
         }
+        TableVisualisationEngine<Pushup>.ViewAsTable(_pushups, TableAligntment.Left, ["ID", "Date", "Reps", "Comments"], "Exercise History");
     }
 }

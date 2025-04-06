@@ -33,6 +33,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddTransient<IExerciseService, ExerciseService>();
         services.AddTransient<ExerciseController>();
         services.AddTransient(typeof(Result<>));
+        services.AddScoped(typeof(TableVisualisationEngine<>));
         services.AddTransient<MainMenu>();
     })
     .UseSerilog()
