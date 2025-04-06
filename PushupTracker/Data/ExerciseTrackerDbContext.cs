@@ -3,10 +3,10 @@ using ExerciseTracker.Models;
 
 namespace ExerciseTracker.Data;
 
-public class ExerciseTrackerDbContext<TEntity> : DbContext where TEntity : class
+public class ExerciseTrackerDbContext : DbContext 
 {
     public ExerciseTrackerDbContext(DbContextOptions options) : base(options)
     {
     }
-    public DbSet<TEntity> Exercises { get; set; }
+    public DbSet<Pushup> Exercises { get; set; }
 }

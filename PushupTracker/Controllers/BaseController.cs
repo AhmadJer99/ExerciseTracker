@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ExerciseTracker.Helper;
 
 namespace ExerciseTracker.Controllers;
 

@@ -1,5 +1,6 @@
 ﻿using ExerciseTracker.Controllers;
 using ExerciseTracker.Data;
+using ExerciseTracker.Helper;
 using ExerciseTracker.Interfaces;
 using ExerciseTracker.Models;
 using ExerciseTracker.Repository;
@@ -25,12 +26,13 @@ Log.Logger.Information("Application Starting");
 var host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
-        services.AddDbContext<ExerciseTrackerDbContext<Pushup>>(options =>
+        services.AddDbContext<ExerciseTrackerDbContext>(options =>
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddTransient(typeof(IRepository<>), typeof(ExerciseRepository<>));
         services.AddTransient<IExerciseService, ExerciseService>();
         services.AddTransient<ExerciseController>();
+        services.AddTransient(typeof(Result<>));
         services.AddTransient<MainMenu>();
     })
     .UseSerilog()

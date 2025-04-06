@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using ExerciseTracker.Controllers;
+using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 

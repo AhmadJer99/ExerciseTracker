@@ -47,8 +47,9 @@ public class MainMenu : BaseMenu
                     AnsiConsole.MarkupLine("[green]Showing Challenges...[/]");
                     break;
                 case MenuOptions.ExerciseHistory:
-                    // Call the method to show exercise history
-                    AnsiConsole.MarkupLine("[green]Showing Exercise History...[/]");
+                    ExerciseHistoryMenu exerciseHistoryMenu = new ExerciseHistoryMenu(_exerciseController);
+                    await exerciseHistoryMenu.ShowMenuAsync();
+                    PressAnyKeyToContinue();
                     break;
                 case MenuOptions.Exit:
                     AnsiConsole.MarkupLine("[red]Exiting...[/]");

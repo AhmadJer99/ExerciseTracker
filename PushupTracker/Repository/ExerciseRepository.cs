@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ExerciseTracker.Interfaces;
 using Microsoft.Extensions.Logging;
+using ExerciseTracker.Data;
 
 namespace ExerciseTracker.Repository;
 
 public class ExerciseRepository<T> : IRepository<T> where T : class
 {
-    private readonly DbContext _context;
-    private readonly ILogger _logger;
+    private readonly ExerciseTrackerDbContext _context;
     private readonly DbSet<T> _dbSet;
+    private readonly ILogger<ExerciseRepository<T>> _logger;
 
-    public ExerciseRepository(DbContext context, ILogger logger)
+    public ExerciseRepository(ExerciseTrackerDbContext context, ILogger<ExerciseRepository<T>> logger)
     {
         _context = context;
         _logger = logger;
