@@ -3,7 +3,6 @@ using ExerciseTracker.Controllers;
 using ExerciseTracker.Models;
 using ConsoleTableExt;
 using Spectre.Console;
-using ExerciseTracker.Helper;
 
 namespace ExerciseTracker.UserInterface;
 
@@ -53,7 +52,7 @@ public class ExerciseHistoryMenu : BaseMenu
                 continue;
 
             if (input == "Q")
-                break;
+                return;
 
             if (input.StartsWith('E') && int.TryParse(input[1..], out int editId))
             {
@@ -76,13 +75,47 @@ public class ExerciseHistoryMenu : BaseMenu
 
     private async Task HandleRowEditAsync(int editId)
     {
-        // I can edit Date,Reps or comments
+        Console.Write("Enter new date (MM-dd-YYYY HH:MM (24HR Format)): ");
+        DateTime date = Validation.ValidateDateInput(Console.ReadLine());
+
+        Console.Write("Enter number of reps: ");
+        int reps = Validation.ValidateIntInput(Console.ReadLine());
+
+        Console.Write("Enter comments: ");
+        string? comments = Validation.ValidateStringInput(Console.ReadLine());
+
+        var updatedPushup = new Pushup
+        {
+            Id = editId,
+            Date = date,
+            Reps = reps,
+            Comments = comments
+        };
+
+        var result = await _exerciseController.UpdateExerciseAsync(editId, updatedPushup);
+        if (result.Success)
+        {
+            AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
+        }
+
+        PressAnyKeyToContinue();
     }
 
     private async Task HandleRowDeleteAsync(int deleteId)
     {
         var result = await _exerciseController.DeleteExerciseAsync(deleteId);
-        AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+        if (result.Success)
+        {
+            AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
+        }
         PressAnyKeyToContinue();
     }
 }
