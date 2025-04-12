@@ -2,107 +2,101 @@
 using ExerciseTracker.Interfaces;
 using Microsoft.Extensions.Logging;
 using ExerciseTracker.Data;
+using ExerciseTracker.Models;
 
 namespace ExerciseTracker.Repository;
 
-public class ExerciseRepository<T> : IRepository<T> where T : class
+public class ExerciseRepository : IExerciseRepository
 {
     private readonly ExerciseTrackerDbContext _context;
-    private readonly DbSet<T> _dbSet;
-    private readonly ILogger<ExerciseRepository<T>> _logger;
+    private readonly ILogger<ExerciseRepository> _logger;
 
-    public ExerciseRepository(ExerciseTrackerDbContext context, ILogger<ExerciseRepository<T>> logger)
+    public ExerciseRepository(ExerciseTrackerDbContext context, ILogger<ExerciseRepository> logger)
     {
         _context = context;
         _logger = logger;
-        _dbSet = _context.Set<T>();
-
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(Pushup pushup)
     {
-        if (entity == null)
+        if (pushup == null)
         {
-            _logger.LogError("Attempted to add a null entity of type {EntityType}", typeof(T).Name);
-            throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
+            _logger.LogError("Attempted to add a null entity of type {EntityType}", typeof(Pushup).Name);
+            throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
         }
         try
         {
-            await _dbSet.AddAsync(entity);
+            await _context.Exercises.AddAsync(pushup);
             await _context.SaveChangesAsync();
         }
         catch
         {
-            _logger.LogError("Error adding entity of type {EntityType}", typeof(T).Name);
+            _logger.LogError("Error adding entity of type {EntityType}", typeof(Pushup).Name);
             throw;
         }
     }
 
-    public async Task DeleteAsync(T entity)
+    public async Task DeleteAsync(Pushup pushup)
     {
-        if (entity == null)
+        if (pushup == null)
         {
-            _logger.LogError("Attempted to delete a null entity of type {EntityType}", typeof(T).Name);
-            throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
+            _logger.LogError("Attempted to delete a null entity of type {EntityType}", typeof(Pushup).Name);
+            throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
         }
         try
         {
-            _dbSet.Remove(entity);
+            _context.Exercises.Remove(pushup);
             await _context.SaveChangesAsync();
         }
         catch
         {
-            _logger.LogError("Error deleting entity of type {EntityType}", typeof(T).Name);
+            _logger.LogError("Error deleting entity of type {EntityType}", typeof(Pushup).Name);
             throw;
-
         }
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<Pushup>> GetAllAsync()
     {
         try
         {
-            return await _dbSet.ToListAsync();
+            return await _context.Exercises.AsNoTracking().ToListAsync();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving all entities of type {EntityType}", typeof(T).Name);
+            _logger.LogError(ex, "Error retrieving all entities of type {EntityType}", typeof(Pushup).Name);
             throw;
-
         }
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async Task<Pushup> GetByIdAsync(int id)
     {
         try
         {
-            return await _context.FindAsync<T>(id);
+            return await _context.Exercises.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
         catch
         {
-            _logger.LogError("Error retrieving entity of type {EntityType} with ID {Id}", typeof(T).Name, id);
+            _logger.LogError("Error retrieving entity of type {EntityType} with ID {Id}", typeof(Pushup).Name, id);
             throw;
-
         }
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task UpdateAsync(Pushup pushup)
     {
-        if (entity == null)
+        if (pushup == null)
         {
-            _logger.LogError("Attempted to update a null entity of type {EntityType}", typeof(T).Name);
-            throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
+            _logger.LogError("Attempted to update a null entity of type {EntityType}", typeof(Pushup).Name);
+            throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
         }
         try
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(pushup).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
         catch
         {
-            _logger.LogError("Error updating entity of type {EntityType}", typeof(T).Name);
+            _logger.LogError("Error updating entity of type {EntityType}", typeof(Pushup).Name);
             throw;
-
         }
     }
 }

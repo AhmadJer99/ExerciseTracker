@@ -56,13 +56,14 @@ public class ExerciseHistoryMenu : BaseMenu
 
             if (input.StartsWith('E') && int.TryParse(input[1..], out int editId))
             {
-                // Call your edit method
-                await HandleRowEditAsync(editId);
+                if (await CheckIdExistsAsync(editId))
+                    await HandleRowEditAsync(editId);
                 break;
             }
             else if (input.StartsWith('D') && int.TryParse(input[1..], out int deleteId))
             {
-                await HandleRowDeleteAsync(deleteId);
+                if (await CheckIdExistsAsync(deleteId))
+                    await HandleRowDeleteAsync(deleteId);
                 break;
             }
             else
@@ -73,23 +74,34 @@ public class ExerciseHistoryMenu : BaseMenu
         await ShowMenuAsync();
     }
 
+    private async Task<bool> CheckIdExistsAsync(int editId)
+    {
+        var result = await _exerciseController.GetExerciseByIdAsync(editId);
+        if (!result.Success)
+        {
+            Console.WriteLine(result.Message);
+            return false;
+        }
+        return true;
+    }
+
     private async Task HandleRowEditAsync(int editId)
     {
-        Console.Write("Enter new date (MM-dd-YYYY HH:MM (24HR Format)): ");
+        Console.Write("Enter new date (MM-dd-yyyy HH:mm)  (e.g., 04-10-2024 04:30): ");
         DateTime date = Validation.ValidateDateInput(Console.ReadLine());
 
-        Console.Write("Enter number of reps: ");
-        int reps = Validation.ValidateIntInput(Console.ReadLine());
+        //Console.Write("Enter number of reps: ");
+        //int reps = Validation.ValidateIntInput(Console.ReadLine());
 
-        Console.Write("Enter comments: ");
-        string? comments = Validation.ValidateStringInput(Console.ReadLine());
+        //Console.Write("Enter comments: ");
+        //string? comments = Validation.ValidateStringInput(Console.ReadLine());
 
         var updatedPushup = new Pushup
         {
             Id = editId,
             Date = date,
-            Reps = reps,
-            Comments = comments
+            Reps = 1,
+            Comments = "s"
         };
 
         var result = await _exerciseController.UpdateExerciseAsync(editId, updatedPushup);

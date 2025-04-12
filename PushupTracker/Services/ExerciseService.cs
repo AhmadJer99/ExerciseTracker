@@ -5,9 +5,9 @@ namespace ExerciseTracker.Services;
 
 public class ExerciseService : IExerciseService
 {
-    private readonly IRepository<Pushup> _repository;
+    private readonly IExerciseRepository _repository;
 
-    public ExerciseService(IRepository<Pushup> repository)
+    public ExerciseService(IExerciseRepository repository)
     {
         _repository = repository;
     }
