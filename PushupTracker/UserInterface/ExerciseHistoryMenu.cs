@@ -16,16 +16,24 @@ public class ExerciseHistoryMenu : BaseMenu
     }
     public override async Task ShowMenuAsync()
     {
-        var result = _exerciseController.GetAllExercisesAsync().Result;
-        var _pushups = result.Data ?? [];
-        if (result.Success)
+        try
         {
-            Console.WriteLine(result.Message);
-            await ShowExerciseHistoryAsync(_pushups);
+            var result = _exerciseController.GetAllExercisesAsync().Result;
+            var _pushups = result.Data ?? [];
+            if (result.Success)
+            {
+                Console.WriteLine(result.Message);
+                await ShowExerciseHistoryAsync(_pushups);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
         }
-        else
+        catch (AggregateException ex)
         {
-            Console.WriteLine(result.Message);
+            Console.WriteLine("An error occurred while fetching exercises: " + ex.InnerException?.Message);
+            return;
         }
     }
 
@@ -76,58 +84,106 @@ public class ExerciseHistoryMenu : BaseMenu
 
     private async Task<bool> CheckIdExistsAsync(int editId)
     {
-        var result = await _exerciseController.GetExerciseByIdAsync(editId);
-        if (!result.Success)
+        try
         {
-            Console.WriteLine(result.Message);
+            var result = await _exerciseController.GetExerciseByIdAsync(editId);
+            if (!result.Success)
+            {
+                Console.WriteLine(result.Message);
+                return false;
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
             return false;
         }
-        return true;
     }
 
     private async Task HandleRowEditAsync(int editId)
     {
-        Console.Write("Enter new date (MM-dd-yyyy HH:mm)  (e.g., 04-10-2024 04:30): ");
-        DateTime date = Validation.ValidateDateInput(Console.ReadLine());
+        // Initialize data to avoid CS0165 error
+        DateTime date = DateTime.MinValue; 
+        int reps = default;
+        try
+        {
+            Console.Write("Enter new date (MM-dd-yyyy HH:mm)  (e.g., 04-10-2024 04:30) Or (Q to cancel): ");
+            date = Validation.ValidateDateInput(Console.ReadLine());
+        }
+        catch (ArgumentException ex)
+        {
+            AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            PressAnyKeyToContinue();
+            return;
+        }
+        try
+        {
+            Console.Write("Enter number of reps: Or (Q to cancel): ");
+            reps = Validation.ValidateIntInput(Console.ReadLine());
+        }
+        catch (ArgumentException ex)
+        {
+            AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            PressAnyKeyToContinue();
+            return;
+        }
 
-        //Console.Write("Enter number of reps: ");
-        //int reps = Validation.ValidateIntInput(Console.ReadLine());
-
-        //Console.Write("Enter comments: ");
-        //string? comments = Validation.ValidateStringInput(Console.ReadLine());
+        string? comments = AnsiConsole.Ask<string>("Enter the new comment Or (Q to cancel): ");
+        if (comments?.ToLower().Trim() == "q")
+        {
+            AnsiConsole.MarkupLine("[red]Operation cancelled.[/]");
+            PressAnyKeyToContinue();
+            return;
+        }
 
         var updatedPushup = new Pushup
         {
             Id = editId,
             Date = date,
-            Reps = 1,
-            Comments = "s"
+            Reps = reps,
+            Comments = comments
         };
-
-        var result = await _exerciseController.UpdateExerciseAsync(editId, updatedPushup);
-        if (result.Success)
+        try
         {
-            AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
-        }
-        else
-        {
-            AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
-        }
+            var result = await _exerciseController.UpdateExerciseAsync(editId, updatedPushup);
+            if (result.Success)
+            {
+                AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
+            }
 
-        PressAnyKeyToContinue();
+            PressAnyKeyToContinue();
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            PressAnyKeyToContinue();
+        }
     }
 
     private async Task HandleRowDeleteAsync(int deleteId)
     {
-        var result = await _exerciseController.DeleteExerciseAsync(deleteId);
-        if (result.Success)
+        try
         {
-            AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+            var result = await _exerciseController.DeleteExerciseAsync(deleteId);
+            if (result.Success)
+            {
+                AnsiConsole.MarkupLine($"[green]{result.Message}[/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
+            }
+            PressAnyKeyToContinue();
         }
-        else
+        catch (Exception ex)
         {
-            AnsiConsole.MarkupLine($"[red]{result.Message}[/]");
+            AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            PressAnyKeyToContinue();
         }
-        PressAnyKeyToContinue();
     }
 }

@@ -38,7 +38,8 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task DeleteAsync(Pushup pushup)
     {
-        if (pushup == null)
+        var pushupById = await _context.Exercises.AsNoTracking().Where(e => e.Id == pushup.Id).FirstOrDefaultAsync();
+        if (pushupById == null)
         {
             _logger.LogError("Attempted to delete a null entity of type {EntityType}", typeof(Pushup).Name);
             throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
