@@ -38,23 +38,17 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task DeleteAsync(Pushup pushup)
     {
-        var pushupById = await _context.Exercises.AsNoTracking().Where(e => e.Id == pushup.Id).FirstOrDefaultAsync();
+        var pushupById = await _context.Exercises.FirstOrDefaultAsync(e => e.Id == pushup.Id);
         if (pushupById == null)
         {
-            _logger.LogError("Attempted to delete a null entity of type {EntityType}", typeof(Pushup).Name);
-            throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
+            _logger.LogError("Attempted to delete a non-existing entity of type {EntityType}", typeof(Pushup).Name);
+            throw new ArgumentException("Entity not found");
         }
-        try
-        {
-            _context.Exercises.Remove(pushup);
-            await _context.SaveChangesAsync();
-        }
-        catch
-        {
-            _logger.LogError("Error deleting entity of type {EntityType}", typeof(Pushup).Name);
-            throw;
-        }
+
+        _context.Exercises.Remove(pushupById);
+        await _context.SaveChangesAsync();
     }
+
 
     public async Task<IEnumerable<Pushup>> GetAllAsync()
     {
@@ -82,22 +76,25 @@ public class ExerciseRepository : IExerciseRepository
         }
     }
 
-    public async Task UpdateAsync(Pushup pushup)
+    public async Task UpdateAsync(Pushup updatedPushup)
     {
-        if (pushup == null)
+        if (updatedPushup == null)
         {
             _logger.LogError("Attempted to update a null entity of type {EntityType}", typeof(Pushup).Name);
-            throw new ArgumentNullException(nameof(pushup), "Entity cannot be null");
+            throw new ArgumentNullException(nameof(updatedPushup), "Entity cannot be null");
         }
-        try
+
+        var existingPushup = await _context.Exercises.FirstOrDefaultAsync(e => e.Id == updatedPushup.Id);
+        if (existingPushup == null)
         {
-            _context.Entry(pushup).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _logger.LogError("Entity of type {EntityType} with ID {Id} not found for update", typeof(Pushup).Name, updatedPushup.Id);
+            throw new InvalidOperationException("Entity not found.");
         }
-        catch
-        {
-            _logger.LogError("Error updating entity of type {EntityType}", typeof(Pushup).Name);
-            throw;
-        }
+
+        existingPushup.Date = updatedPushup.Date;
+        existingPushup.Reps = updatedPushup.Reps;
+        existingPushup.Comments = updatedPushup.Comments;
+
+        await _context.SaveChangesAsync();
     }
 }
