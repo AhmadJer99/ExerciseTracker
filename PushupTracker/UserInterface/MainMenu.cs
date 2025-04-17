@@ -6,6 +6,7 @@ namespace ExerciseTracker.UserInterface;
 public class MainMenu : BaseMenu
 {
     private readonly ExerciseController _exerciseController;
+    private readonly ExerciseHistoryMenu _exerciseHistoryMenu;
 
     private enum MenuOptions
     {
@@ -16,9 +17,10 @@ public class MainMenu : BaseMenu
         Exit
     }
 
-    public MainMenu(ExerciseController exerciseController)
+    public MainMenu(ExerciseController exerciseController, ExerciseHistoryMenu exerciseHistoryMenu)
     {
         _exerciseController = exerciseController;
+        _exerciseHistoryMenu = exerciseHistoryMenu;
     }
 
     public override async Task ShowMenuAsync()
@@ -47,8 +49,7 @@ public class MainMenu : BaseMenu
                     AnsiConsole.MarkupLine("[green]Showing Challenges...[/]");
                     break;
                 case MenuOptions.ExerciseHistory:
-                    ExerciseHistoryMenu exerciseHistoryMenu = new ExerciseHistoryMenu(_exerciseController);
-                    await exerciseHistoryMenu.ShowMenuAsync();
+                    await _exerciseHistoryMenu.ShowMenuAsync();
                     PressAnyKeyToContinue();
                     break;
                 case MenuOptions.Exit:

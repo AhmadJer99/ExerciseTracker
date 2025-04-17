@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ExerciseTracker.Data;
 using ExerciseTracker.Interfaces;
-using Microsoft.Extensions.Logging;
-using ExerciseTracker.Data;
 using ExerciseTracker.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ExerciseTracker.Repository;
 

@@ -30,11 +30,12 @@ var host = Host.CreateDefaultBuilder()
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddScoped<IExerciseRepository,ExerciseRepository>();
-        services.AddTransient<IExerciseService, ExerciseService>();
-        services.AddTransient<ExerciseController>();
-        services.AddTransient(typeof(Result<>));
+        services.AddScoped<IExerciseService, ExerciseService>();
+        services.AddScoped<ExerciseController>();
+        services.AddScoped(typeof(Result<>));
         services.AddScoped(typeof(TableVisualisationEngine<>));
-        services.AddTransient<MainMenu>();
+        services.AddScoped<MainMenu>();
+        services.AddScoped<ExerciseHistoryMenu>();
     })
     .UseSerilog()
     .Build();

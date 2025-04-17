@@ -30,7 +30,7 @@ public class ExerciseController : BaseController
         if (exercise == null)
             return Result<Pushup>.FailResult("Exercise not found.");
         return Result<Pushup>.SuccessResult(exercise);
-    }
+        }
 
     public async Task<Result<Pushup>> CreateExerciseAsync(Pushup newPushup)
     {
