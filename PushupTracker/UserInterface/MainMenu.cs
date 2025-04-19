@@ -1,12 +1,11 @@
-﻿using ExerciseTracker.Controllers;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 
 public class MainMenu : BaseMenu
 {
-    private readonly ExerciseController _exerciseController;
     private readonly ExerciseHistoryMenu _exerciseHistoryMenu;
+    private readonly AddExerciseMenu _addExerciseMenu;
 
     private enum MenuOptions
     {
@@ -17,10 +16,10 @@ public class MainMenu : BaseMenu
         Exit
     }
 
-    public MainMenu(ExerciseController exerciseController, ExerciseHistoryMenu exerciseHistoryMenu)
+    public MainMenu( ExerciseHistoryMenu exerciseHistoryMenu, AddExerciseMenu addExerciseMenu)
     {
-        _exerciseController = exerciseController;
         _exerciseHistoryMenu = exerciseHistoryMenu;
+        _addExerciseMenu = addExerciseMenu;
     }
 
     public override async Task ShowMenuAsync()
@@ -37,8 +36,7 @@ public class MainMenu : BaseMenu
             switch (selectedOption)
             {
                 case MenuOptions.AddExercise:
-                    // Call the method to add an exercise
-                    AnsiConsole.MarkupLine("[green]Adding Exercise...[/]");
+                    await _addExerciseMenu.ShowMenuAsync();
                     break;
                 case MenuOptions.Progress:
                     // Call the method to show progress
@@ -50,7 +48,6 @@ public class MainMenu : BaseMenu
                     break;
                 case MenuOptions.ExerciseHistory:
                     await _exerciseHistoryMenu.ShowMenuAsync();
-                    PressAnyKeyToContinue();
                     break;
                 case MenuOptions.Exit:
                     AnsiConsole.MarkupLine("[red]Exiting...[/]");

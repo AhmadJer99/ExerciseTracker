@@ -36,6 +36,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddScoped(typeof(TableVisualisationEngine<>));
         services.AddScoped<MainMenu>();
         services.AddScoped<ExerciseHistoryMenu>();
+        services.AddScoped<AddExerciseMenu>();
     })
     .UseSerilog()
     .Build();

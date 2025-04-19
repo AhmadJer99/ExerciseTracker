@@ -104,8 +104,8 @@ public class ExerciseHistoryMenu : BaseMenu
     private async Task HandleRowEditAsync(int editId)
     {
         // Initialize data to avoid CS0165 error
-        DateTime date = DateTime.MinValue;
-        int reps = default;
+        DateTime date;
+        int reps;
         try
         {
             Console.Write("Enter new date (MM-dd-yyyy HH:mm)  (e.g., 04-10-2024 04:30) Or (Q to cancel): ");
