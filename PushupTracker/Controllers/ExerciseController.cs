@@ -1,15 +1,14 @@
-﻿using AutoMapper;
-using ExerciseTracker.Helper;
+﻿using ExerciseTracker.Helper;
 using ExerciseTracker.Interfaces;
 using ExerciseTracker.Models;
 
 namespace ExerciseTracker.Controllers;
 
-public class ExerciseController : BaseController
+public class ExerciseController
 {
     private readonly IExerciseService _exerciseService;
 
-    public ExerciseController(IExerciseService exerciseService, IMapper mapper) : base(mapper)
+    public ExerciseController(IExerciseService exerciseService)
     {
         _exerciseService = exerciseService;
     }
@@ -30,7 +29,7 @@ public class ExerciseController : BaseController
         if (exercise == null)
             return Result<Pushup>.FailResult("Exercise not found.");
         return Result<Pushup>.SuccessResult(exercise);
-        }
+    }
 
     public async Task<Result<Pushup>> CreateExerciseAsync(Pushup newPushup)
     {

@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using AutoMapper;
+using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 
@@ -10,8 +11,6 @@ public class MainMenu : BaseMenu
     private enum MenuOptions
     {
         AddExercise = 1,
-        Progress,
-        Challenges,
         ExerciseHistory,
         Exit
     }
@@ -37,14 +36,6 @@ public class MainMenu : BaseMenu
             {
                 case MenuOptions.AddExercise:
                     await _addExerciseMenu.ShowMenuAsync();
-                    break;
-                case MenuOptions.Progress:
-                    // Call the method to show progress
-                    AnsiConsole.MarkupLine("[green]Showing Progress...[/]");
-                    break;
-                case MenuOptions.Challenges:
-                    // Call the method to show challenges
-                    AnsiConsole.MarkupLine("[green]Showing Challenges...[/]");
                     break;
                 case MenuOptions.ExerciseHistory:
                     await _exerciseHistoryMenu.ShowMenuAsync();

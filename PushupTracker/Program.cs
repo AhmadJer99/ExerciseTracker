@@ -28,7 +28,6 @@ var host = Host.CreateDefaultBuilder()
     {
         services.AddDbContext<ExerciseTrackerDbContext>(options =>
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddScoped<IExerciseRepository,ExerciseRepository>();
         services.AddScoped<IExerciseService, ExerciseService>();
         services.AddScoped<ExerciseController>();

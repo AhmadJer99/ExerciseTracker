@@ -20,7 +20,7 @@ public class AddExerciseMenu : BaseMenu
         DateTime date;
         int reps;
         Console.Clear();
-        Console.WriteLine("Add Exercise Menu");
+        AnsiConsole.MarkupLine("[teal]Add Exercise Menu[/]\n");
         Console.WriteLine("Please enter the details of the exercise you want to add:");
 
         try
