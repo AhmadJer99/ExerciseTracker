@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace ExerciseTracker.UserInterface;
 
