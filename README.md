@@ -45,3 +45,10 @@
 1. Clone the repository
    ```bash
    git clone https://github.com/your-username/ExerciseTracker.git
+2. Navigate to the project directory
+   ```bash
+   cd ExerciseTracker
+3. Update the connection string in `appsettings.json`
+4. Run the project
+   ```bash
+   dotnet run
