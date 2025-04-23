@@ -2,7 +2,6 @@
 using ExerciseTracker.Data;
 using ExerciseTracker.Helper;
 using ExerciseTracker.Interfaces;
-using ExerciseTracker.Models;
 using ExerciseTracker.Repository;
 using ExerciseTracker.Services;
 using ExerciseTracker.UserInterface;
@@ -28,7 +27,9 @@ var host = Host.CreateDefaultBuilder()
     {
         services.AddDbContext<ExerciseTrackerDbContext>(options =>
             options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
-        services.AddScoped<IExerciseRepository,ExerciseRepository>();
+        services.AddSingleton<ExerciseTrackerDapperDbContext>();
+        services.AddScoped<ExerciseRepository>();
+        services.AddScoped<ExerciseRepositoryDapper>();
         services.AddScoped<IExerciseService, ExerciseService>();
         services.AddScoped<ExerciseController>();
         services.AddScoped(typeof(Result<>));
