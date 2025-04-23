@@ -53,3 +53,32 @@
 5. Run the project
    ```bash
    dotnet run
+
+---
+
+## 🧩 Features
+
+> The main features of the app.
+
+- [ ] Add a new exercise entry
+- [ ] View all exercises
+- [ ] Switch between EF Core and Dapper
+- [ ] Logging with Serilog
+- [ ] Clean separation between layers (Controller, Service, Repository)
+
+---
+
+## 🗂️ Project Structure
+
+```bash
+ExerciseTracker/
+├── Controllers/         #  Controllers
+├── Repositories/        # EFCore and Dapper repositories
+│   ├── EFCoreRepo/
+│   ├── DapperRepo/
+├── Services/            # Business logic
+├── Models/              # Data models
+├── Data/                # DbContext For both dapper and entity framework
+├── Program.cs           # DI Container for registering services
+├── appsettings.json     # Configuration file
+
