@@ -34,6 +34,7 @@
 | Dependency Injection | `Built-in .NET Core DI` |
 | Logging        | `Serilog`           |
 | ORM/Querying   | `EF Core`, `Dapper` |
+| UI Formatting   | `Spectre.Console`,`ConsoleTableExt`|
 
 ---
 
