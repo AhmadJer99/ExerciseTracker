@@ -73,12 +73,16 @@
 ```bash
 ExerciseTracker/
 ├── Controllers/         #  Controllers
-├── Repositories/        # EFCore and Dapper repositories
+├── Data/                # DbContext For both dapper and entity framework
+├── Helper/              # Contains a result class that acts as the container for every returned entity
+├── Interfaces/          # Contains the interfaces to set contracts with other classes to specifiy the class structure
+├── Migrations/
+├── Models/              # Data models
+├── Repository/          # EFCore and Dapper repositories
 │   ├── EFCoreRepo/
 │   ├── DapperRepo/
 ├── Services/            # Business logic
-├── Models/              # Data models
-├── Data/                # DbContext For both dapper and entity framework
+├── UserInterface/       # The UI classes for the application
 ├── Program.cs           # DI Container for registering services
 ├── appsettings.json     # Configuration file
 
