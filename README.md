@@ -1,4 +1,5 @@
-# ExerciseTracker 
+# ExerciseTracker
+
 <table>
   <tr>
     <td>
@@ -7,7 +8,39 @@
     <td>
       <h1>ExerciseTracker</h1>
       <p>This is an application where I record exercise data focusing on building the app using the <strong>Repository Pattern</strong> and <strong>Dependency Injection</strong>. I will be using EF Core for the database backend, and will focus on only one type of exercise to keep the app simple.<br>
-      And to illustrate the Separation of Concerns by the repository pattern, I created a class to replace Entity Framework by Dapper or in my repository. I notice didn't need to touch my controller class at all!</p>
+      And to illustrate the Separation of Concerns by the repository pattern, I created a class to replace Entity Framework by Dapper or in my repository. I noticed I didn't need to touch my controller class at all!</p>
     </td>
   </tr>
 </table>
+
+---
+
+## 📚 Resources I Used
+> A list of tutorials, courses, blogs, or documentation that helped me build this project.
+
+- [ ] Example: Official EF Core Documentation
+- [ ] Example: Dapper Getting Started Guide
+- [ ] Example: ASP.NET Core MVC Tutorial by [Author/Platform]
+
+---
+
+## 🛠️ Tech Stack
+
+| Category        | Technology Used     |
+|----------------|---------------------|
+| Backend        | `ASP.NET Core`      |
+| Database       | `SQL Server`, `EF Core`, `Dapper` |
+| Dependency Injection | `Built-in .NET Core DI` |
+| Logging        | `Serilog`           |
+| ORM/Querying   | `EF Core`, `Dapper` |
+| Others         | `Any other tools or libraries` |
+
+---
+
+## 🚀 How to Run This App
+
+> Simple and clear instructions on how to get the app running locally.
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/your-username/ExerciseTracker.git
