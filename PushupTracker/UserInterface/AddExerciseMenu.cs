@@ -59,8 +59,9 @@ public class AddExerciseMenu : BaseMenu
         TableVisualisationEngine<Pushup>.ViewAsTable(
             [pushup],
             tableAligntment: TableAligntment.Center,
-            ["Date", "Reps", "Comments"],
+            ["Id","Date", "Reps", "Comments"],
             "Exercise added successfully!"
         );
+        PressAnyKeyToContinue();
     }
 }

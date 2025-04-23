@@ -3,6 +3,7 @@ using ExerciseTracker.Models;
 using ExerciseTracker.Data;
 using Dapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExerciseTracker.Repository;
 
@@ -59,12 +60,22 @@ public class ExerciseRepositoryDapper : IExerciseRepository
 
     public async Task AddAsync(Pushup entity)
     {
-        throw new NotImplementedException();
+        using var connection = _dbContext.CreateConnection();
+        connection.Open();
+
+        var query = @"
+            INSERT INTO Exercises (Date, Reps, Comments)
+            VALUES (@Date, @Reps, @Comments);";
+        await connection.ExecuteAsync(query, entity);
     }
 
     public async Task DeleteAsync(Pushup entity)
     {
-        throw new NotImplementedException();
+        using var connection = _dbContext.CreateConnection();
+        connection.Open();
+
+        var query = "DELETE FROM Exercises WHERE Id = @Id";
+        await connection.ExecuteAsync(query, new { entity.Id });
     }
 
     public async Task<IEnumerable<Pushup>> GetAllAsync()
@@ -80,11 +91,24 @@ public class ExerciseRepositoryDapper : IExerciseRepository
 
     public async Task<Pushup> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        using var connection = _dbContext.CreateConnection();
+        connection.Open();
+
+        var query = "SELECT * FROM Exercises WHERE Id = @Id";
+
+        return await connection.QuerySingleOrDefaultAsync<Pushup>(query, new { Id = id });
     }
 
     public async Task UpdateAsync(Pushup entity)
     {
-        throw new NotImplementedException();
+        using var connection = _dbContext.CreateConnection();
+        connection.Open();
+
+        var query = @"
+            UPDATE Exercises
+            SET Date = @Date, Reps = @Reps, Comments = @Comments
+            WHERE Id = @Id;";
+
+        await connection.ExecuteAsync(query, entity);
     }
 }

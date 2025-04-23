@@ -16,12 +16,14 @@ public class ExerciseService : IExerciseService
     }
     public async Task Create(Pushup newEntity)
     {
-        await _repository.AddAsync(newEntity);
+        //await _repository.AddAsync(newEntity);
+        await _dapperRepository.AddAsync(newEntity);
     }
 
     public async Task Delete(Pushup pushup)
     {
-        await _repository.DeleteAsync(pushup);
+        //await _repository.DeleteAsync(pushup);
+        await _dapperRepository.DeleteAsync(pushup);
     }
 
     public async Task<List<Pushup>> GetAll()
@@ -32,11 +34,13 @@ public class ExerciseService : IExerciseService
 
     public async Task<Pushup> GetById(int id)
     {
-        return await _repository.GetByIdAsync(id);
+        //return await _repository.GetByIdAsync(id);
+        return await _dapperRepository.GetByIdAsync(id);
     }
 
     public Task Update(Pushup updatedPushup)
     {
-        return _repository.UpdateAsync(updatedPushup);
+        //return _repository.UpdateAsync(updatedPushup);
+        return _dapperRepository.UpdateAsync(updatedPushup);
     }
 }
