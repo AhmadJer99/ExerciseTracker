@@ -3,7 +3,6 @@ using ExerciseTracker.Models;
 using ExerciseTracker.Data;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExerciseTracker.Repository;
 
